@@ -20,7 +20,10 @@ module.exports = (robot) ->
       entry += difference
     else
       entry -= difference
-    karmaTypeMap[thing] = entry;
+    if entry == 0
+      delete karmaTypeMap[thing];
+    else
+      karmaTypeMap[thing] = entry;
     karmaMap[karmaType] = karmaTypeMap
     robot.brain.set mapKey, karmaMap
     msg.send (karmaType == 'user' && 'User ' || '') + "#{thing}'s karma has " + (modifier[0] == '+' && 'increased' || 'decreased') + " to #{entry}" + (modifier.length - 1 > 5 && ' (limited by BuzzKill™ mode)' || '')
