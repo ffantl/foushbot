@@ -26,7 +26,7 @@ module.exports = (robot) ->
     msg.send (karmaType == 'user' && 'User ' || '') + "#{thing}'s karma has " + (modifier[0] == '+' && 'increased' || 'decreased') + " to #{entry}" + (modifier.length - 1 > 5 && ' (Maximum 5 enforced)' || '')
     true
 
-  robot.hear /^(\w+)([\+|\-]+)$/, (msg) ->
+  robot.hear /^@?(\w+)([\+|\-]+)$/, (msg) ->
     computeKarma(msg.match[1], msg.match[2], msg)
 
   robot.hear /^((['|"])(.+)\2)([\+|\-]+)$/, (msg) ->
