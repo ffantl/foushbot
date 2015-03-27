@@ -23,7 +23,7 @@ module.exports = (robot) ->
     karmaTypeMap[thing] = entry;
     karmaMap[karmaType] = karmaTypeMap
     robot.brain.set mapKey, karmaMap
-    msg.send (karmaType == 'user' && 'User ' || '') + "#{thing}'s karma has " + (modifier[0] == '+' && 'increased' || 'decreased') + " to #{entry}" + (modifier.length - 1 > 5 && ' (Maximum 5 enforced)' || '')
+    msg.send (karmaType == 'user' && 'User ' || '') + "#{thing}'s karma has " + (modifier[0] == '+' && 'increased' || 'decreased') + " to #{entry}" + (modifier.length - 1 > 5 && ' (limited by BuzzKill™ mode)' || '')
     true
 
   robot.hear /^@?(\w+)([\+|\-]+)$/, (msg) ->
