@@ -14,10 +14,10 @@ module.exports = (robot) ->
     )
     robot.logger.info query
     robot.http("https://ajax.googleapis.com/ajax/services/search/images?#{query}").get() (err, res, body) ->
+      robot.logger.info body, err
       result = null
       if !err && body
         try
-          robot.logger.info body
           data = JSON.parse(body)
           if data && data.responseData && data.responseData.results
             result = (msg.random data.responseData.results).unescapedUrl
