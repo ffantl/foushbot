@@ -37,19 +37,21 @@ module.exports = (robot) ->
 
 
   robot.router.post '/hubot/slash/anim', (req, res) ->
-    params = parseSlackRequest(req, 'Nbe56XeexradTV1cIKB2a4Q2')
-    if params
-      # params now hydrated
-      callback = (result, err) ->
-        url = result
-        robot.http("https://hooks.slack.com/services/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").post(JSON.stringify(
-          text: "<#{url}> from data #{req.body} (decoded into: "+JSON.stringify(params)+")"
-          channel: params.channel_name
-        )) (err, res, body) ->
-            console.log "done"
-            return
-      queryGoogle(params.text, 'gif', callback)
-    res.send ''
+    res.send JSON.stringify(req.body)
+    return
+#    params = parseSlackRequest(req, 'Nbe56XeexradTV1cIKB2a4Q2')
+#    if params
+#      # params now hydrated
+#      callback = (result, err) ->
+#        url = result
+#        robot.http("https://hooks.slack.com/services/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").post(JSON.stringify(
+#          text: "<#{url}> from data #{req.body} (decoded into: "+JSON.stringify(params)+")"
+#          channel: params.channel_name
+#        )) (err, res, body) ->
+#            console.log "done"
+#            return
+#      queryGoogle(params.text, 'gif', callback)
+#    res.send ''
 
   robot.router.post '/hubot/slash/img', (req, res) ->
     params = parseSlackRequest(req, 'Nbe56XeexradTV1cIKB2a4Q2')
