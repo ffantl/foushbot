@@ -27,6 +27,11 @@ module.exports = (robot) ->
         msg.send "Encountered an error :( #{err}"
         return
 
+  robot.router.post '/hubot/slash/anim', (req, res) ->
+    # check Nbe56XeexradTV1cIKB2a4Q2
+    data = if req.body.payload then JSON.parse req.body.payload else req.body
+    console.log data
+    res.send 'OK'
 
   robot.hear /^\/anim (.+)$/, (msg) ->
     imageSearch(msg, msg.match[1], 'gif')
