@@ -17,6 +17,7 @@ module.exports = (robot) ->
       result = null
       if !err && body
         try
+          robot.logger.info body
           data = JSON.parse(body)
           if data && data.responseData && data.responseData.results
             result = (msg.random data.responseData.results).unescapedUrl
