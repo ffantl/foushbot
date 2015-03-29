@@ -21,8 +21,9 @@ module.exports = (robot) ->
           data = JSON.parse(body)
           if data && data.responseData && data.responseData.results
             result = (msg.random data.responseData.results).unescapedUrl
-        catch
-          err = "Failed to parse body"
+        catch e
+          err = "Failed to parse body: #{e.name}, #{e.message}"
+          robot.logger.info e
       resultCallback result, err
 
   parseSlackRequest = (req, validToken) ->
