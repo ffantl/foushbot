@@ -4,6 +4,7 @@
 module.exports = (robot) ->
     robot.router.post '/integrations/anim', (req, res) ->
         data = req.body
+        console.log 'request to integrations!', process.env.INTEGRATION_ANIM_TOKEN, data
         if data.token != process.env.INTEGRATION_ANIM_TOKEN
             return res.status(500).send 'Invalid access token'
         room = data.channel_name
