@@ -19,7 +19,6 @@ module.exports = (robot) ->
                 image = images[Math.floor(Math.random()*images.length)]
                 reply = ensureImageExtension image.unescapedUrl
             robot.messageRoom lookup.name, reply
-            console.log "lookup name:", lookup.name, "channel name: ", data
         res.status(200).send ''
     ensureImageExtension = (url) ->
         ext = url.split('.').pop()
