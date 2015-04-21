@@ -18,7 +18,7 @@ module.exports = (robot) ->
             if images?.length > 0
                 image = images[Math.floor(Math.random()*images.length)]
                 reply = ensureImageExtension image.unescapedUrl
-            robot.message room, reply
+            robot.adapter.message {channel: room}, reply
         res.status(200).send ''
     ensureImageExtension = (url) ->
         ext = url.split('.').pop()
