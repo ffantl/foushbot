@@ -6,16 +6,16 @@ module.exports = (robot) ->
         data = req.body
         if data.token != process.env.INTEGRATION_IMG_TOKEN
             return res.status(500).send 'Invalid access token'
-        imageSearch data.channel_id, data.text, false
+        imageSearch data.channel_id, data.user_name, data.text, false
         res.status(200).send ''
     robot.router.post '/integrations/anim', (req, res) ->
         data = req.body
         if data.token != process.env.INTEGRATION_ANIM_TOKEN
             return res.status(500).send 'Invalid access token'
-        imageSearch data.channel_id, data.text, true
+        imageSearch data.channel_id, data.user_name, data.text, true
         res.status(200).send ''
 
-    imageSearch = (channelId, query, animated) ->
+    imageSearch = (channelId, userName, query, animated) ->
         lookup = robot.adapter.client.getChannelGroupOrDMByID channelId
         q = v: '1.0', rsz: '8', q: query, safe: 'moderate'
         q.imgtype = 'animated' if animated is true
@@ -24,10 +24,10 @@ module.exports = (robot) ->
         .get() (err, response, body) ->
             images = JSON.parse(body)
             images = images.responseData?.results
-            reply = '/me got nothin'
+            reply = '/me got nothin for "'+query+'", sorry '+userName
             if images?.length > 0
                 image = images[Math.floor(Math.random()*images.length)]
-                reply = ensureImageExtension image.unescapedUrl
+                reply = "#{userName} result for \"#{query}\"\n" + ensureImageExtension image.unescapedUrl
             robot.messageRoom lookup.name, reply
 
 
