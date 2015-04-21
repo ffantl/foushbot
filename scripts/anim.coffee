@@ -7,6 +7,7 @@ module.exports = (robot) ->
         if data.token != process.env.INTEGRATION_ANIM_TOKEN
             return res.status(500).send 'Invalid access token'
         room = '#'+data.channel_name
+        console.log "sending message to #{room}"
         q = v: '1.0', rsz: '8', q: data.text, safe: 'active', animated: true
         robot.http('http://ajax.googleapis.com/ajax/services/search/images')
         .query(q)
@@ -15,9 +16,9 @@ module.exports = (robot) ->
             images = images.responseData?.results
             if images?.length > 0
                 image = images[Math.floor(Math.random()*images.length)]
-                robot.messageRoom room, ensureImageExtension image.unescapedUrl
+                robot.send {room, room}, ensureImageExtension image.unescapedUrl
             else
-                robot.messageRoom room, "/me got nothin"
+                robot.send {room, room}, "/me got nothin"
         res.status(200).send ''
     ensureImageExtension = (url) ->
         ext = url.split('.').pop()
