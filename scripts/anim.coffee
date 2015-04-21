@@ -15,10 +15,9 @@ module.exports = (robot) ->
             images = images.responseData?.results
             if images?.length > 0
                 image = images[Math.floor(Math.random()*images.length)]
-                console.log robot
-                robot.send {room: room}, ensureImageExtension image.unescapedUrl
+                robot.messageRoom room, ensureImageExtension image.unescapedUrl
             else
-                robot.send {room: room}, "/me got nothin"
+                robot.messageRoom room, "/me got nothin"
         res.status(200).send ''
     ensureImageExtension = (url) ->
         ext = url.split('.').pop()
