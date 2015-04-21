@@ -4,7 +4,6 @@
 module.exports = (robot) ->
     robot.router.post '/integrations/anim', (req, res) ->
         data = req.body
-        console.log 'request to integrations!', process.env.INTEGRATION_ANIM_TOKEN, data
         if data.token != process.env.INTEGRATION_ANIM_TOKEN
             return res.status(500).send 'Invalid access token'
         room = data.channel_name
@@ -16,6 +15,7 @@ module.exports = (robot) ->
             images = images.responseData?.results
             if images?.length > 0
                 image = images[Math.floor(Math.random()*images.length)]
+                console.log robot
                 robot.send {room: room}, ensureImageExtension image.unescapedUrl
             else
                 robot.send {room: room}, "/me got nothin"
