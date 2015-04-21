@@ -17,7 +17,8 @@ module.exports = (robot) ->
 
     imageSearch = (channelId, query, animated) ->
         lookup = robot.adapter.client.getChannelGroupOrDMByID channelId
-        q = v: '1.0', rsz: '8', q: query, safe: 'active', animated: animated
+        q = v: '1.0', rsz: '8', q: query, safe: 'moderate'
+        q.imgtype = 'animated' if animated is true
         robot.http('http://ajax.googleapis.com/ajax/services/search/images')
         .query(q)
         .get() (err, response, body) ->
