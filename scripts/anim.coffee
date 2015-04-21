@@ -6,7 +6,7 @@ module.exports = (robot) ->
         data = req.body
         if data.token != process.env.INTEGRATION_ANIM_TOKEN
             return res.status(500).send 'Invalid access token'
-        room = data.channel_name
+        room = '#'+data.channel_name
         q = v: '1.0', rsz: '8', q: data.text, safe: 'active', animated: true
         robot.http('http://ajax.googleapis.com/ajax/services/search/images')
         .query(q)
