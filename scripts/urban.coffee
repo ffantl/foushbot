@@ -21,8 +21,7 @@ module.exports = (robot) ->
         res.status(200).send ''
 
     sendDefinition = (result, channelName, username) ->
-        example = result.example.replace "\n", "\n> "
-        data = channel: "##{channelName}", text: "*#{result.word}*: #{result.definition}\n> #{example}\nHT #{username} <#{result.permalink}|View on site>"
+        data = channel: "##{channelName}", text: "*#{result.word}*: #{result.definition}\n```#{result.example}```\nHT #{username} <#{result.permalink}|View on site>"
         console.log data
         robot.http('https://hooks.slack.com/services/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')
         .post(JSON.stringify(data)) (err, response, body) ->
