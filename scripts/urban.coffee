@@ -25,8 +25,8 @@ module.exports = (robot) ->
 
     sendDefinition = (result, tags, channelName, username) ->
         joinedTags = tags.join ', '
-        tagText = tags.length ? "\nTags: _ #{joinedTags} _" : '';
-        data = channel: "##{channelName}", text: "*#{result.word}*: #{result.definition}\n```#{result.example}```#{tagText}\nHT #{username} <#{result.permalink}|View on site>"
+        tagText = ''; # tags.length ? "\nTags: _ #{joinedTags} _" : '';
+        data = channel: "##{channelName}", text: "*#{result.word}*: #{result.definition}\n```#{result.example}```\nHT #{username} <#{result.permalink}|View on site>"
         console.log data
         robot.http('https://hooks.slack.com/services/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')
         .post(JSON.stringify(data)) (err, response, body) ->
