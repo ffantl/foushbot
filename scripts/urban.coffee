@@ -13,7 +13,7 @@ module.exports = (robot) ->
         .get() (err, response, body) ->
             results = JSON.parse(body)
             # once we have the data
-            if results and result.list and results.list.length
+            if results and results.list and results.list.length
                 sendDefinition results.list[0], data.channel_name
         res.status(200).send ''
     sendDefinition = (result, channelName) ->
