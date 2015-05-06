@@ -19,9 +19,8 @@ module.exports = (robot) ->
             if results and results.list and results.list.length
                 sendDefinition results.list[0], lookup.name
         res.status(200).send ''
+    
     sendDefinition = (result, channelName) ->
         data = channel: "##{channelName}", text: "*#{result.word}*: #{result.definition}\n> _#{result.example}_\n<#{result.permalink}|View on site>"
-#        console.log "sending result", data
-        robot.http('https://hooks.slack.com/services/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')
-        .post(data) (err, response, body) ->
-          console.log 'done'
+        robot.http('https://hooks.slack.com/services/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').post(data) (err, response, body) ->
+            console.log "done"
