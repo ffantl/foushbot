@@ -24,7 +24,7 @@ module.exports = (robot) ->
 
 
     sendDefinition = (result, tags, channelName, username) ->
-        joinedTags = tags.join ', '
+        joinedTags = (tags.join ', ').replace '+', ' '
         tagText = if tags.length then "\nTags: _ #{joinedTags} _" else '';
         data = channel: "##{channelName}", text: "*#{result.word}*: #{result.definition}\n```#{result.example}```#{tagText}\nHT #{username} <#{result.permalink}|View on site>"
         console.log data
