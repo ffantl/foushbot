@@ -9,6 +9,7 @@ module.exports = (robot) ->
         # imageSearch data.channel_id, data.user_name, data.text, false
         q = term: data.text
         robot.http('https://mashape-community-urban-dictionary.p.mashape.com/define')
+        .header('X-Mashape-Key', process.env.MASHAPE_URBAN_KEY)
         .query(q)
         .get() (err, response, body) ->
             results = JSON.parse(body)
