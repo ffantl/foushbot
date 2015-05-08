@@ -24,10 +24,10 @@ module.exports = (robot) ->
         .get() (err, response, body) ->
             images = JSON.parse(body)
             images = images.responseData?.results
-            reply = '/me got nothin for "'+query+'", sorry '+userName
+            reply = "_got nothin for \"#{query}, sorry #{userName}_"
             if images?.length > 0
                 image = images[Math.floor(Math.random()*images.length)]
-                reply = "#{userName} result for \"#{query}\"\n" + ensureImageExtension image.unescapedUrl
+                reply = "#{userName} result for *\"#{query}\"*\n" + ensureImageExtension image.unescapedUrl
             robot.messageRoom lookup.name, reply
 
 
