@@ -17,11 +17,17 @@ module.exports = (robot) ->
             # once we have the data
 #            console.log "UD API Results!", body, results
             if results and results.list and results.list.length
-                sendDefinition results.list[0], lookup.name
-        res.status(200).send ''
+                res.status(200).send ''
+                sendDefinition results.list[0], results.tags or [], lookup.name, data.user_name
+            else
+              res.status(200).send "Unable to find results"
 
-    sendDefinition = (result, channelName) ->
-        data = channel: "##{channelName}", text: "*#{result.word}*: #{result.definition}\n> _#{result.example}_\n<#{result.permalink}|View on site>"
+
+    sendDefinition = (result, tags, channelName, username) ->
+        joinedTags = (tags.join ', ').replace /\+/g, ' '
+        tagText = if tags.length then "\nTags: _ #{joinedTags} _" else '';
+        data = channel: "##{channelName}", text: "*#{result.word}*: #{result.definition}\n```#{result.example}```#{tagText}\nHT #{username} <#{result.permalink}|View on site>"
+        console.log data
         robot.http('https://hooks.slack.com/services/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')
         .post(JSON.stringify(data)) (err, response, body) ->
-            console.log "done"
+            return true
