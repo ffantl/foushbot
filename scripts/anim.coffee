@@ -22,6 +22,8 @@ module.exports = (robot) ->
         robot.http('http://ajax.googleapis.com/ajax/services/search/images')
         .query(q)
         .get() (err, response, body) ->
+            if err
+              console.log "Google API Error!", err, response, body
             images = JSON.parse(body)
             images = images.responseData?.results
             reply = "_got nothin for \"#{query}\", sorry #{userName}_"
