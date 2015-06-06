@@ -29,10 +29,10 @@ module.exports = (robot) ->
     msg.send (karmaType == 'user' && 'User ' || '') + "#{thing}'s karma has " + (modifier[0] == '+' && 'increased' || 'decreased') + " to #{entry}" + (modifier.length - 1 > 5 && ' (limited by BuzzKill™ mode)' || '')
     true
 
-  robot.hear /^@?(\w+):?\s*([\+|\-]+)/, (msg) ->
+  robot.hear /^@?(\w+):?\s*([\+|\-]{2,})/, (msg) ->
     computeKarma(msg.match[1], msg.match[2], msg)
 
-  robot.hear /^((['|"])(.+)\2)([\+|\-]+)/, (msg) ->
+  robot.hear /^((['|"])(.+)\2)([\+|\-]{2,})/, (msg) ->
     computeKarma(msg.match[3], msg.match[4], msg)
   robot.hear /^(([“])(.+)[”])([\+|\-]+)/, (msg) ->
     computeKarma(msg.match[3], msg.match[4], msg)
