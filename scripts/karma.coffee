@@ -34,3 +34,7 @@ module.exports = (robot) ->
 
   robot.hear /^((['|"])(.+)\2)([\+|\-]+)/, (msg) ->
     computeKarma(msg.match[3], msg.match[4], msg)
+  robot.hear /^(([“])(.+)[”])([\+|\-]+)/, (msg) ->
+    computeKarma(msg.match[3], msg.match[4], msg)
+  robot.hear /^(([‘])(.+)[’])([\+|\-]+)/, (msg) ->
+    computeKarma(msg.match[3], msg.match[4], msg)
