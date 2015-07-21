@@ -1,0 +1,31 @@
+{
+  "name": "robut",
+  "version": "0.0.0",
+  "private": true,
+  "author": "John Foushee <johnfoushee@gmail.com>",
+  "description": "Some bitch named deltrese",
+  "dependencies": {
+    "hubot": "^2.11.4",
+    "hubot-diagnostics": "0.0.1",
+    "hubot-google-images": "^0.1.4",
+    "hubot-google-translate": "^0.1.0",
+    "hubot-help": "^0.1.1",
+    "hubot-heroku-keepalive": "0.0.4",
+    "hubot-maps": "0.0.1",
+    "hubot-pugme": "^0.1.0",
+    "hubot-redis-brain": "0.0.2",
+    "hubot-rules": "^0.1.0",
+    "hubot-scripts": "^2.5.16",
+    "hubot-shipit": "^0.1.2",
+    "hubot-slack": "^3.3.0",
+    "hubot-youtube": "^0.1.2",
+    "oauth-1.0a": "0.2.1",
+    "query-string": "^2.3.0",
+    "redis": "^0.12.1",
+    "request": "^2.58.0",
+    "url": "^0.10.3"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}
