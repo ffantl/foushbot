@@ -27,6 +27,6 @@ module.exports = (robot) ->
         joinedTags = (tags.join ', ').replace /\+/g, ' '
         tagText = if tags.length then "\nTags: _ #{joinedTags} _" else '';
         data = channel: "##{channelName}", text: "*#{result.word}*: #{result.definition}\n```#{result.example}```#{tagText}\nHT #{username} <#{result.permalink}|View on site>"
-        robot.http(process.env.URBAN_INT_URL)
+        robot.http(process.env.IWH_URBAN_URL)
         .post(JSON.stringify(data)) (err, response, body) ->
             return true
