@@ -34,11 +34,12 @@ module.exports = (robot) ->
 #        .post(JSON.stringify(data)) (err, response, body) ->
 #            return true
     suggestMovie = (movie, channelName, username) ->
+        console.log channelName, username
         showtimes = []
         for showtime in movie.showtimes
             do (showtime) ->
-                time = moment(showtime.dateTime).format("h:mm a MM/DD/YYYY")
-                showtimes.push "#{showtime.theatre.name} at #{time}"
+                time = moment(showtime.dateTime).format("h:mm a (MM/DD/YYYY)")
+                showtimes.push "`#{showtime.theatre.name}` at *#{time}*"
         message = "*#{movie.title}*\n```#{movie.longDescription}```\n" + (showtimes.join "\n")
         data = channel: channelName, text: message
         robot.http(process.env.IWH_SOCIAL_URL)
