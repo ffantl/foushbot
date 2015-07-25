@@ -3,18 +3,9 @@
 request = require 'request'
 OAuth   = require 'oauth-1.0a'
 queryString = require 'query-string'
-redis = require "redis"
-URL = require "url"
-client = null
-
-if process.env.REDISTOGO_URL
-  rtg   = URL.parse(process.env.REDISTOGO_URL);
-  client = redis.createClient(rtg.port, rtg.hostname);
-  client.auth(rtg.auth.split(":")[1]);
-else
-  client = redis.createClient()
 
 module.exports = (robot) ->
+  client = robot.getRedis()
   yelpResultLimt = 20
   oauth = OAuth(
     consumer:
