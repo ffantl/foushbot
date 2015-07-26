@@ -48,9 +48,9 @@ module.exports = (robot) ->
         messageParts = ["*#{movie.title}*"]
         if movie.longDescription
             messageParts.push "```#{movie.longDescription}```"
-        for theater in showings
+        for theaterId, theater of showings
             messageParts.push "*#{theater.name}*"
-            for showDate, showTimes in theater['dates']
+            for showDate, showTimes of theater['dates']
                 messageParts.push "_#{showDate}_"
                 for time in showTimes
                     messageParts.push "> #{time}"
