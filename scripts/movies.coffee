@@ -52,8 +52,7 @@ module.exports = (robot) ->
             messageParts.push "*#{theater.name}*"
             for showDate, showTimes of theater['dates']
                 messageParts.push "_#{showDate}_"
-                for time in showTimes
-                    messageParts.push "> #{time}"
+                messageParts.push "> " + (showTimes.join ", ")
 
         message = (messageParts.join "\n")
         data = channel: channelName, text: message
