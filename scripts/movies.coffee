@@ -1,6 +1,7 @@
 # Description:
-#   Shortcut implementation for /anim
-#
+#   Hubot trigger to suggest a nearby movie
+# Commands:
+#   hubot movie me <zip> - displays movies playing near <zip>
 queryString = require 'query-string'
 moment = require 'moment'
 
@@ -34,7 +35,6 @@ module.exports = (robot) ->
 #        .post(JSON.stringify(data)) (err, response, body) ->
 #            return true
     suggestMovie = (movie, channelName, username) ->
-        console.log channelName, username
         showtimes = []
 
         showings = {}
@@ -113,8 +113,13 @@ module.exports = (robot) ->
         client.set key, JSON.stringify data
         callback movie
 
-    robot.hear /movies?/, (msg) ->
-        getMovieSuggestion null, (movie) ->
+    robot.respond /movie( me)?(.*)/, (msg) ->
+        zip = null
+        if msg.match[2].length
+            regex = /(^|\W)(\d{5})(\W|$)/
+            if regex.test msg.match[2]
+                matches = msg.match[2].match regex
+                zip = matches[2]
+        getMovieSuggestion zip, (movie) ->
             if (movie)
                 suggestMovie movie, msg.message.room, msg.message.user.name
-
