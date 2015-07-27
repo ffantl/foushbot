@@ -95,7 +95,7 @@ module.exports = (robot) ->
           handleSuggestions msg, term, value
           return
 
-  robot.hear /(^|\W)(lounc|lunch)(\s+\w+|$)/i, (msg) ->
+  robot.hear /(^|\W)(lounc)(\s+\w+|$)/i, (msg) ->
     unless msg.match[3].trim().toLowerCase() == 'me'
       console.log msg.match
       respondToLunch msg, ''
