@@ -36,7 +36,7 @@ module.exports = (robot) ->
       if foushIntegrations[slug]
         return console.error "#{name} is already registered"
       foushIntegrations[slug] = name: name, description: description, slug: slug, callback: callback
-
+      console.log "registered integration #{slug}", foushIntegrations[slug]
     robot.foush.methods.incomingWebHook = (channelName, message) ->
       data = channel: channelName, text: message
       robot.http(process.env.IWH_SOCIAL_URL)
@@ -57,4 +57,4 @@ module.exports = (robot) ->
       integration = robot.foush.methods.getIntegrations action.toLowerCase()
       unless integration
         return res.status(200).send "Invalid feature #{action}. Use 'list' to list all options."
-      integration.callback (data.text.replace regex, '').trim() data, req, res
+      integration.callback (data.text.replace regex, '').trim(), data, req, res

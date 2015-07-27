@@ -4,6 +4,5 @@ module.exports = (robot) ->
     integrations = robot.foush.methods.getIntegrations()
     integrationList = []
     for slug, integration of integrations
-      integrationList.push "#{integration.slug} #{integration.description}"
-    console.log arguments
-    res.status(200).send integrationList.join "\n"
+      integrationList.push "*/foush #{integration.slug}* #{integration.description}"
+    res.status(200).send(integrationList.join "\n")
