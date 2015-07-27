@@ -7,7 +7,7 @@ module.exports = (robot) ->
         if data.token != process.env.INTEGRATION_URBAN_TOKEN
             return res.status(500).send 'Invalid access token'
         # imageSearch data.channel_id, data.user_name, data.text, false
-        channel = robot.iwhChannel data
+        channel = robot.foush.methods.iwhChannel data
         q = term: data.text
         robot.http('https://mashape-community-urban-dictionary.p.mashape.com/define')
         .header('X-Mashape-Key', process.env.MASHAPE_URBAN_KEY)

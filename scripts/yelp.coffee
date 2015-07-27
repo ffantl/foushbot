@@ -5,7 +5,7 @@ OAuth   = require 'oauth-1.0a'
 queryString = require 'query-string'
 
 module.exports = (robot) ->
-  client = robot.getRedis()
+  client = robot.foush.methods.getRedis()
   yelpResultLimt = 20
   oauth = OAuth(
     consumer:
