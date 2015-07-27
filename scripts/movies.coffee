@@ -7,7 +7,7 @@ moment = require 'moment'
 
 module.exports = (robot) ->
     client = robot.foush.methods.getRedis()
-    robot.foush.methods.suggestMovie = (movie, channelName, username) ->
+    suggestMovie = (movie, channelName, username) ->
         showtimes = []
 
         showings = {}
@@ -34,7 +34,7 @@ module.exports = (robot) ->
         return "movies-#{key}"
     getFormattedDate = () ->
         return ((new Date).toISOString()).replace(/T.+/, '')
-    robot.foush.methods.getMovieSuggestion = (zip, callback) ->
+    getMovieSuggestion = (zip, callback) ->
         zip ?= process.env.DEFAULT_ZIP
         # calculate the date
         date = getFormattedDate()
@@ -81,14 +81,20 @@ module.exports = (robot) ->
         # save the updated data set
         client.set key, JSON.stringify data
         callback movie
-
-    robot.respond /movie( me)?(.*)/, (msg) ->
+    getZipFromMessage = (message) ->
         zip = null
-        if msg.match[2].length
+        if message.length
             regex = /(^|\W)(\d{5})(\W|$)/
-            if regex.test msg.match[2]
-                matches = msg.match[2].match regex
+            if regex.test message
+                matches = message.match regex
                 zip = matches[2]
-        robot.foush.methods.getMovieSuggestion zip, (movie) ->
+        return zip
+    robot.respond /movie( me)?(.*)/, (msg) ->
+        zip = getZipFromMessage msg.match[2]
+        getMovieSuggestion zip, (movie) ->
             if (movie)
-                robot.foush.methods.suggestMovie movie, msg.message.room, msg.message.user.name
+                suggestMovie movie, msg.message.room, msg.message.user.name
+    robot.foush.methods.registerIntegration 'movies', "[zipcode] (optional) Get a random movie playing in the area.", 'movies', (message, data, req, res) ->
+      getMovieSuggestion (getZipFromMessage message), (movie) ->
+          if (movie)
+              suggestMovie movie, (robot.foush.methods.iwhChannel data), data.user_name

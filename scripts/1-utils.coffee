@@ -30,18 +30,31 @@ module.exports = (robot) ->
       key = arguments[0] || null
       return if key then foushIntegrations[key] else foushIntegrations
     robot.foush.methods.registerIntegration = (name, description, slug, callback) ->
+      slug = slug.toLowerCase()
       if !name
         return console.error "Integration name is required"
-      if foushIntegrations[name]
+      if foushIntegrations[slug]
         return console.error "#{name} is already registered"
-      foushIntegrations[name] = name: name, description: description, slug: slug, callback: callback
-      robot.router.post '/integrations/'+slug.toLowerCase(), (req, res) ->
-        data = req.body
-        if data.token != process.env['INTEGRATION_'+slug.toUpperCase()+'_TOKEN']
-          return res.status(500).send 'Invalid access token'
-        callback(data, req, res)
+      foushIntegrations[slug] = name: name, description: description, slug: slug, callback: callback
+
     robot.foush.methods.incomingWebHook = (channelName, message) ->
       data = channel: channelName, text: message
       robot.http(process.env.IWH_SOCIAL_URL)
       .post(JSON.stringify(data)) (err, response, body) ->
           return true
+
+    # generic router to handle /foush X requests
+    robot.router.post '/integrations/foush', (req, res) ->
+      data = req.body
+      if data.token != process.env['INTEGRATION_FOUSH_TOKEN']
+        return res.status(500).send 'Invalid access token'
+      # using data, look at the first part of the message
+      regex = /^\s*(\w+)/
+      action = "list"
+      if regex.test data.text
+        matches = data.text.match regex
+        action = matches[1]
+      integration = robot.foush.methods.getIntegrations action.toLowerCase()
+      unless integration
+        return res.status(200).send "Invalid feature #{action}. Use 'list' to list all options."
+      integration.callback (data.text.replace regex, '').trim() data, req, res
