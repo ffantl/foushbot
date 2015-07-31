@@ -18,6 +18,6 @@ module.exports = (robot) ->
     robot.foush.methods.getKarmaForRoom (robot.foush.methods.iwhChannel data).slice(1), (rankings) ->
       bottomMatch = /(bottom|evil|low|worst)/
       if bottomMatch.test message
-        return callback "*MOST EVIL*\n"+(karmify rankings.lowest)
+        return callback "*MOST EVIL*\n"+(karmify rankings.lowest.reverse())
       callback "*MOST GOOD*\n"+(karmify rankings.highest)
   ), username: "FoushJudgement", icon_url: "http://i.imgur.com/gJ3xpj5.png"
