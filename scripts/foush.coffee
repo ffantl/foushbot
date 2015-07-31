@@ -20,4 +20,4 @@ module.exports = (robot) ->
       if bottomMatch.test message
         return callback "*MOST EVIL*\n"+(karmify rankings.lowest.reverse())
       callback "*MOST GOOD*\n"+(karmify rankings.highest)
-  ), username: "FoushJudgement", icon_url: "http://i.imgur.com/gJ3xpj5.png"
+  ), username: "Karma", icon_url: "http://i.imgur.com/gJ3xpj5.png"

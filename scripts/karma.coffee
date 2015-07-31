@@ -54,7 +54,11 @@ module.exports = (robot) ->
       karmaTypeMap[thing] = entry;
     karmaMap[karmaType] = karmaTypeMap
     robot.brain.set mapKey, karmaMap
-    msg.send (karmaType == 'user' && 'User ' || '') + "#{thing}'s karma has " + (modifier[0] == '+' && 'increased' || 'decreased') + " to #{entry}" + (modifier.length - 1 > 5 && ' (limited by BuzzKill™ mode)' || '')
+
+    result = (karmaType == 'user' && 'User ' || '') + "#{thing}'s karma has " + (modifier[0] == '+' && 'increased' || 'decreased') + " to #{entry}" + (modifier.length - 1 > 5 && ' (limited by BuzzKill™ mode)' || '')
+    msg.send result
+    console.log "ROOM: ", msg.message.room
+    robot.foush.methods.incomingWebHook 'bot-test-2', result, (username: "Karma", icon_url: "http://i.imgur.com/gJ3xpj5.png")
     true
 
   robot.hear /^@?(\w+):?\s*([\+|\-]{2,})/, (msg) ->
