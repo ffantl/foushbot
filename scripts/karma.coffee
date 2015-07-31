@@ -3,17 +3,26 @@
 #
 
 module.exports = (robot) ->
+  getRankingKeyFor = (room) ->
+    return "karma-rank#{room}"
+  getKarmaMapKeyFor = (room) ->
+    return "karma#{room}"
+
+  clearComputedRankings = (room) ->
+    mapKey = getRankingKeyFor room
+    robot.brain.remove mapKey
+
 
   robot.foush.methods.getKarmaForRoom = (room, callback) ->
-    mapKey = "karma-rank#{room}"
+    mapKey = getRankingKeyFor room
+    console.log "getting karma for #{room}"
     rankings = robot.brain.get(mapKey)
     if rankings
       return callback rankings
     totals = []
-    console.log "getting karma for #{room}"
-    karmaMap = robot.brain.get("karma#{room}") or {}
+    karmaMap = robot.brain.get(getKarmaMapKeyFor room) or {}
     for key, map of karmaMap
-      for thing, karma of karmaMap
+      for thing, karma of map
         totals.push thing: thing, karma: karma * 1
     totals.sort (a,b) ->
       return b.karma - a.karma
@@ -25,7 +34,8 @@ module.exports = (robot) ->
     thing = thing.trim()
     if !thing
       return
-    mapKey = "karma#{msg.message.room}"
+    clearComputedRankings msg.message.room
+    mapKey = getKarmaMapKeyFor msg.message.room
     console.log "Karma being updated for #{mapKey}"
     karmaMap = robot.brain.get(mapKey) or {}
     # is this a thing or a user?

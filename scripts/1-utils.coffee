@@ -46,6 +46,7 @@ module.exports = (robot) ->
     robot.foush.methods.defaultIntegrationCallback = (handler) ->
       return (itg, message, data, req, res) ->
         handler itg, message, data, req, res, (result) ->
+          res.status(200).send ''
           channelName = null
           if typeof result is 'string'
             message = result
@@ -70,6 +71,7 @@ module.exports = (robot) ->
       # using data, look at the first part of the message
       regex = /^\s*(\w+)/
       action = "list"
+      data.text = data.text or ''
       if regex.test data.text
         matches = data.text.match regex
         action = matches[1]

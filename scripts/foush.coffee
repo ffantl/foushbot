@@ -7,8 +7,16 @@ module.exports = (robot) ->
       integrationList.push "*/foush #{integration.slug}* #{integration.description}"
     res.status(200).send(integrationList.join "\n")
 
-  robot.foush.methods.registerIntegration 'Karma', 'Displays the room karma', 'karma', robot.foush.methods.defaultIntegrationCallback (itg, message, data, req, res, callback) ->
+  robot.foush.methods.registerIntegration 'Karma', '(top|bottom) - Displays the room karma', 'karma', robot.foush.methods.defaultIntegrationCallback (itg, message, data, req, res, callback) ->
+    karmify = (ranks) ->
+      console.log ranks, 'ranks'
+      result = []
+      for i, rank in ranks
+        result.push "*#{rank.thing}*: #{rank.karma}"
+      return result.join('\n');
     robot.foush.methods.getKarmaForRoom data.channel_name, (rankings) ->
-      console.log "got rankings", rankings
-      callback "oh man"
+      bottomMatch = /bottom/
+      if bottomMatch.test message
+        callback "*BOTTOM KARMA*\n"+(karmify rankings.lowest.reverse())
+      callback "*TOP KARMA*\n"+(karmify rankings.highest)
   , username: "FoushJudgement", icon_url: "http://i.imgur.com/gJ3xpj5.png"
