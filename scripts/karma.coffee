@@ -26,7 +26,7 @@ module.exports = (robot) ->
         totals.push thing: thing, karma: karma * 1
     totals.sort (a,b) ->
       return b.karma - a.karma
-    rankings = lowest: (totals.slice 0,10), highest: totals.slice(if totals.length < 10 then 0 else totals.length - 10)
+    rankings = highest: (totals.slice 0,10), lowest: totals.slice(if totals.length < 10 then 0 else totals.length - 10)
     robot.brain.set mapKey, rankings
     return callback rankings
 
