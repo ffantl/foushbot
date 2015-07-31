@@ -8,6 +8,7 @@ module.exports = (robot) ->
     thing = thing.trim()
     if !thing
       return
+    console.log "message message", msg.message
     mapKey = "karma#{msg.message.room}"
     karmaMap = robot.brain.get(mapKey) or {}
     # is this a thing or a user?
