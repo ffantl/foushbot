@@ -16,6 +16,9 @@ module.exports = (robot) ->
   );
   token = public: process.env.YELP_TOKEN_PUBLIC, secret: process.env.YELP_TOKEN_PRIVATE
   requests = {}
+
+  lunchResponse = (msg, message) ->
+    robot.foush.methods.incomingWebHook "##{msg.message.room}", message, (username: "Lounc", icon_url: "http://i.imgur.com/T196TjRs.jpg")
   prefixKey = (key) ->
     return "lunch"+(if key then key.trim().toLowerCase() else '')
   requestSuggestions = (term, offset, callbackFn) ->
@@ -60,13 +63,15 @@ module.exports = (robot) ->
   handleSuggestions = (msg, term, data) ->
     entry = JSON.parse data
     unless entry.results.length
-      msg.send "Got nothing for #{term}"
+      lunchResponse msg, "Got nothing for #{term}"
       return
     console.log "have results for #{term}"
     index = Math.floor(Math.random()*entry.results.length)
     business = entry.results[index]
     entry.results.splice(index, 1)
-    msg.send "*#{business.name}*\n"+business.location.display_address.join("\n")+"\n#{business.url}"
+    message = "*#{business.name}*\n"+business.location.display_address.join("\n")+"\n#{business.url}"
+#    msg.send message
+    lunchResponse msg, message
     if entry.results.length < 1
       requestThenStore term, entry.offset - -yelpResultLimt, (value, response) ->
         if response.businesses.length < 1
@@ -90,7 +95,7 @@ module.exports = (robot) ->
         requestThenStore term, 0, (value, response) ->
           if response.businesses.length < 1
             client.del (prefixKey term)
-            msg.send "Unable to find results for #{term}"
+            lunchResponse msg, "Unable to find results for #{term}"
             return
           handleSuggestions msg, term, value
           return

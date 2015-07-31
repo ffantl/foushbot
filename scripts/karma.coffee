@@ -57,7 +57,6 @@ module.exports = (robot) ->
 
     result = (karmaType == 'user' && 'User ' || '') + "#{thing}'s karma has " + (modifier[0] == '+' && 'increased' || 'decreased') + " to #{entry}" + (modifier.length - 1 > 5 && ' (limited by BuzzKill™ mode)' || '')
 #    msg.send result
-    console.log "MESSAGE", msg, msg.message.room
     robot.foush.methods.incomingWebHook "##{msg.message.room}", result, (username: "Karma", icon_url: "http://i.imgur.com/gJ3xpj5.png")
     true
 
