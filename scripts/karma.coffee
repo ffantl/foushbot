@@ -10,6 +10,7 @@ module.exports = (robot) ->
     if rankings
       return callback rankings
     totals = []
+    console.log "getting karma for #{room}"
     karmaMap = robot.brain.get("karma#{room}") or {}
     for key, map of karmaMap
       for thing, karma of karmaMap
@@ -25,6 +26,7 @@ module.exports = (robot) ->
     if !thing
       return
     mapKey = "karma#{msg.message.room}"
+    console.log "Karma being updated for #{mapKey}"
     karmaMap = robot.brain.get(mapKey) or {}
     # is this a thing or a user?
     karmaType = robot.brain.userForName(thing) && 'user' || 'thing';
