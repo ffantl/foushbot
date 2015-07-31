@@ -7,16 +7,17 @@ module.exports = (robot) ->
       integrationList.push "*/foush #{integration.slug}* #{integration.description}"
     res.status(200).send(integrationList.join "\n")
 
-  robot.foush.methods.registerIntegration 'Karma', '(top|bottom) - Displays the room karma', 'karma', robot.foush.methods.defaultIntegrationCallback (itg, message, data, req, res, callback) ->
+  robot.foush.methods.registerIntegration 'Karma', '(top|bottom) - Displays the room karma', 'karma', (robot.foush.methods.defaultIntegrationCallback (itg, message, data, req, res, callback) ->
     karmify = (ranks) ->
-      console.log ranks, 'ranks'
+      if ranks.length < 1
+        return "_No rankings to display_"
       result = []
-      for i, rank in ranks
+      for rank in ranks
         result.push "*#{rank.thing}*: #{rank.karma}"
       return result.join('\n');
-    robot.foush.methods.getKarmaForRoom data.channel_name, (rankings) ->
-      bottomMatch = /bottom/
+    robot.foush.methods.getKarmaForRoom (robot.foush.methods.iwhChannel data).slice(1), (rankings) ->
+      bottomMatch = /(bottom|evil|low|worst)/
       if bottomMatch.test message
-        callback "*BOTTOM KARMA*\n"+(karmify rankings.lowest.reverse())
-      callback "*TOP KARMA*\n"+(karmify rankings.highest)
-  , username: "FoushJudgement", icon_url: "http://i.imgur.com/gJ3xpj5.png"
+        return callback "*MOST EVIL*\n"+(karmify rankings.lowest)
+      callback "*MOST GOOD*\n"+(karmify rankings.highest)
+  ), username: "FoushJudgement", icon_url: "http://i.imgur.com/gJ3xpj5.png"

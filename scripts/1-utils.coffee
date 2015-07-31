@@ -36,7 +36,6 @@ module.exports = (robot) ->
       if foushIntegrations[slug]
         return console.error "#{name} is already registered"
       foushIntegrations[slug] = name: name, description: description, slug: slug, callback: callback, options: options
-      console.log "registered integration #{slug}", foushIntegrations[slug]
 
     # Method that abstracts boilerplate integration behavior
     #   accepts a handler which gets the integration, message, data, req, res parameters
@@ -59,6 +58,7 @@ module.exports = (robot) ->
     robot.foush.methods.incomingWebHook = (channelName, message, data = {}) ->
       data.channel = channelName
       data.text = message
+      console.log "incoming webhook with", data
       robot.http(process.env.IWH_SOCIAL_URL)
       .post(JSON.stringify(data)) (err, response, body) ->
           return true
