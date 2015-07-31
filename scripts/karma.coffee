@@ -4,11 +4,26 @@
 
 module.exports = (robot) ->
 
+  robot.foush.methods.getKarmaForRoom = (room, callback) ->
+    mapKey = "karma-rank#{room}"
+    rankings = robot.brain.get(mapKey)
+    if rankings
+      return callback rankings
+    totals = []
+    karmaMap = robot.brain.get("karma#{room}") or {}
+    for key, map of karmaMap
+      for thing, karma of karmaMap
+        totals.push thing: thing, karma: karma * 1
+    totals.sort (a,b) ->
+      return b.karma - a.karma
+    rankings = lowest: (totals.slice 0,10), highest: totals.slice(if totals.length < 10 then 0 else totals.length - 10)
+    robot.brain.set mapKey, rankings
+    return callback rankings
+
   computeKarma = (thing, modifier, msg) ->
     thing = thing.trim()
     if !thing
       return
-    console.log "message message", msg.message
     mapKey = "karma#{msg.message.room}"
     karmaMap = robot.brain.get(mapKey) or {}
     # is this a thing or a user?

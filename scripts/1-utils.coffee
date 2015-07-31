@@ -29,16 +29,35 @@ module.exports = (robot) ->
     robot.foush.methods.getIntegrations = () ->
       key = arguments[0] || null
       return if key then foushIntegrations[key] else foushIntegrations
-    robot.foush.methods.registerIntegration = (name, description, slug, callback) ->
+    robot.foush.methods.registerIntegration = (name, description, slug, callback, options = {}) ->
       slug = slug.toLowerCase()
       if !name
         return console.error "Integration name is required"
       if foushIntegrations[slug]
         return console.error "#{name} is already registered"
-      foushIntegrations[slug] = name: name, description: description, slug: slug, callback: callback
+      foushIntegrations[slug] = name: name, description: description, slug: slug, callback: callback, options: options
       console.log "registered integration #{slug}", foushIntegrations[slug]
-    robot.foush.methods.incomingWebHook = (channelName, message) ->
-      data = channel: channelName, text: message
+
+    # Method that abstracts boilerplate integration behavior
+    #   accepts a handler which gets the integration, message, data, req, res parameters
+    #   from typical execution, but this can simply return a string or an object with
+    #     channel and message properties
+    #
+    robot.foush.methods.defaultIntegrationCallback = (handler) ->
+      return (itg, message, data, req, res) ->
+        handler itg, message, data, req, res, (result) ->
+          channelName = null
+          if typeof result is 'string'
+            message = result
+          else
+            channelName = result.channel
+            message = result.message
+          if !channelName
+            channelName = robot.foush.methods.iwhChannel data
+          robot.foush.methods.incomingWebHook channelName, message, itg.options
+    robot.foush.methods.incomingWebHook = (channelName, message, data = {}) ->
+      data.channel = channelName
+      data.text = message
       robot.http(process.env.IWH_SOCIAL_URL)
       .post(JSON.stringify(data)) (err, response, body) ->
           return true
@@ -57,4 +76,4 @@ module.exports = (robot) ->
       integration = robot.foush.methods.getIntegrations action.toLowerCase()
       unless integration
         return res.status(200).send "Invalid feature #{action}. Use 'list' to list all options."
-      integration.callback (data.text.replace regex, '').trim(), data, req, res
+      integration.callback integration, (data.text.replace regex, '').trim(), data, req, res

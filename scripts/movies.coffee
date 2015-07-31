@@ -94,7 +94,7 @@ module.exports = (robot) ->
         getMovieSuggestion zip, (movie) ->
             if (movie)
                 suggestMovie movie, msg.message.room, msg.message.user.name
-    robot.foush.methods.registerIntegration 'movies', "[zipcode] (optional) Get a random movie playing in the area.", 'movies', (message, data, req, res) ->
+    robot.foush.methods.registerIntegration 'movies', "[zipcode] (optional) Get a random movie playing in the area.", 'movies', (itg, message, data, req, res) ->
       getMovieSuggestion (getZipFromMessage message), (movie) ->
           if (movie)
               suggestMovie movie, (robot.foush.methods.iwhChannel data), data.user_name
