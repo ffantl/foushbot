@@ -30,7 +30,8 @@ module.exports = (robot) ->
             if images?.length > 0
                 image = images[Math.floor(Math.random()*images.length)]
                 reply = "#{userName} result for *\"#{query}\"*\n" + ensureImageExtension image.unescapedUrl
-            robot.messageRoom lookup.name, reply
+#            robot.messageRoom lookup.name, reply
+            robot.foush.methods.incomingWebHook lookup.name, reply, (username: "GIFoush", icon_url: "http://i.imgur.com/X4V4qiX.gif")
 
 
     ensureImageExtension = (url) ->

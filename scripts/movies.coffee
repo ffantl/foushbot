@@ -28,7 +28,7 @@ module.exports = (robot) ->
                 messageParts.push "> " + (showTimes.join ", ")
 
         message = (messageParts.join "\n")
-        robot.foush.methods.incomingWebHook channelName, message
+        robot.foush.methods.incomingWebHook channelName, message, (username: "Movies", icon_url: "http://i.imgur.com/Wvr1LAGs.gif")
 
     prefixKey = (key) ->
         return "movies-#{key}"
